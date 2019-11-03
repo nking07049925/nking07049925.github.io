@@ -4,9 +4,10 @@ function setup() {
   fill(255);
   posX = width/2;
   posY = height/2;
+  circleSize = min(width,height)/8;
 }
 
-let circleSize = 200;
+let circleSize;
 let posX, posY;
 let speedX = -2, speedY = -3;
 
