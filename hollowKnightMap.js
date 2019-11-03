@@ -20,7 +20,7 @@ function draw() {
     posX = width/2 + sign(posX - width/2) * (width/2 - circleSize/2);
     speedX = -speedX;
   }
-  if (abs(posY - height/2) > height/2 - circleSize) {
+  if (abs(posY - height/2) > height/2 - circleSize/2) {
     posY = height/2 + sign(posY - height/2) * (height/2 - circleSize/2);
     speedY = -speedY;
   }
