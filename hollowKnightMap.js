@@ -23,6 +23,7 @@ function setup() {
   div.attribute('style','-moz-user-select: none; -webkit-user-select: none; -ms-user-select:none; user-select:none;-o-user-select:none;');
   div.style('overflow', 'hidden');
   div.style('position', 'relative');
+  div.style('display','inline-block');
   div.attribute('unselectable', 'on');
   div.attribute('onselectstart','return false;');
   div.attribute('onmousedown','return false;');
@@ -53,9 +54,12 @@ function mouseReleased() {
   cursor('GRAB');
 }
 
+let scrollSpeed = 0;
+
 function mouseWheel(event) {
+  if (scrollSpeed === 0) scrollSpeed = abs(event.deltaY);
   pscale = scale;
-  scale *= pow(0.85, event.deltaY/100);
+  scale *= pow(0.85, event.deltaY/scrollSpeed);
   scale = constrain(scale, minScale, maxScale);
   posX = (posX - mouseX) * scale / pscale + mouseX;
   posY = (posY - mouseY) * scale / pscale + mouseY;
