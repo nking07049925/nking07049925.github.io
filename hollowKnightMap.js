@@ -3,6 +3,11 @@ let minScale = 1;
 let maxScale = 5;
 let defSize = 400;
 
+let myFont;
+function preload() {
+  myFont = loadFont('Trajan.ttf');
+}
+
 function setup() {
   div = createDiv();
   let body = div.parent();
@@ -15,6 +20,7 @@ function setup() {
   cursor('GRAB');
   stroke(0);
   fill(255);
+  textFont(myFont);
 
   defSize = windowHeight;
 
@@ -37,6 +43,7 @@ function draw() {
   clear();
   div.position(posX,posY);
   circle(posX+140*scale, posY+120*scale, 10 * scale+30);
+  text('Version 0.04',0,20);
 }
 
 function mousePressed() {
