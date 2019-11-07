@@ -1,7 +1,10 @@
+let version = '0.05'
+
 let scale = 1;
 let minScale = 1;
 let maxScale = 5;
 let defSize = 400;
+let curSize;
 
 let myFont;
 function preload() {
@@ -20,15 +23,20 @@ function setup() {
   cursor('GRAB');
   stroke(0);
   fill(255);
-  textFont(myFont);
+  textFont(myFont,40);
 
   defSize = windowHeight;
+  curSize = defSize;
+  constrainMargin = defSize * 0.2;
+  posX = windowWidth/2-defSize/2;
+  posY = windowHeight/2-defSize/2;
 
-  div.position(0,0);
+  div.position(posX, posY);
+  div.size(defSize, defSize);
   div.html('<img src="drawing.svg" alt="svg did an F">');
   div.attribute('style','-moz-user-select: none; -webkit-user-select: none; -ms-user-select:none; user-select:none;-o-user-select:none;');
   div.style('overflow', 'hidden');
-  div.style('position', 'relative');
+  div.style('position', 'absolute');
   div.style('display','inline-block');
   div.attribute('unselectable', 'on');
   div.attribute('onselectstart','return false;');
@@ -37,13 +45,20 @@ function setup() {
   div.child()[0].height = defSize;
 }
 
-let posX = 0, posY = 0, d = 100;
+let posX, posY;
 
 function draw() {
   clear();
   div.position(posX,posY);
-  circle(posX+140*scale, posY+120*scale, 10 * scale+30);
-  text('Version 0.04',0,20);
+  circle(posX+0*scale, posY+0*scale, 10 * scale+30);
+  text('Version '+version,0,40);
+}
+
+let constrainMargin;
+
+function constrainPos() {
+  posX = constrain(posX, -curSize+constrainMargin, windowWidth-constrainMargin);
+  posY = constrain(posY, -curSize+constrainMargin, windowHeight-constrainMargin);
 }
 
 function mousePressed() {
@@ -55,6 +70,7 @@ let pscale = 1;
 function mouseDragged() {
   posX += mouseX - pmouseX;
   posY += mouseY - pmouseY;
+  constrainPos();
 }
 
 function mouseReleased() {
@@ -70,8 +86,13 @@ function mouseWheel(event) {
   scale = constrain(scale, minScale, maxScale);
   posX = (posX - mouseX) * scale / pscale + mouseX;
   posY = (posY - mouseY) * scale / pscale + mouseY;
-  div.child()[0].width = defSize * scale;
-  div.child()[0].height = defSize * scale;
+  curSize = defSize * scale;
+
+  constrainPos();
+
+  div.size(curSize, curSize);
+  div.child()[0].width = curSize;
+  div.child()[0].height = curSize;
   return false;
 }
 
