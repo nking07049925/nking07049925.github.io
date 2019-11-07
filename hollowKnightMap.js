@@ -21,6 +21,8 @@ function setup() {
   div.position(0,0);
   div.html('<img src="drawing.svg" alt="svg did an F">');
   div.attribute('style','-moz-user-select: none; -webkit-user-select: none; -ms-user-select:none; user-select:none;-o-user-select:none;');
+  div.style('overflow', 'hidden');
+  div.style('position', 'relative');
   div.attribute('unselectable', 'on');
   div.attribute('onselectstart','return false;');
   div.attribute('onmousedown','return false;');
