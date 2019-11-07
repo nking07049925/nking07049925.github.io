@@ -67,3 +67,7 @@ function mouseWheel(event) {
   div.child()[0].height = defSize * scale;
   return false;
 }
+
+function windowResized() {
+  resizeCanvas(windowWidth, windowHeight);
+}
