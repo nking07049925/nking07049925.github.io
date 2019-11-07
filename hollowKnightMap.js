@@ -1,32 +1,62 @@
+let scale = 1;
+let minScale = 1;
+let maxScale = 5;
+let defSize = 400;
+
 function setup() {
-  createCanvas(windowWidth, windowHeight);
-  noStroke();
+  div = createDiv();
+  let body = div.parent();
+  body.style.overflow = 'hidden';
+  body.style.background = 'rgb(30, 30, 50)';
+  
+  let canvas = createCanvas(windowWidth, windowHeight);
+  canvas.position(0,0);
+  cursor('GRAB');
+  stroke(0);
   fill(255);
-  posX = width/2;
-  posY = height/2;
-  circleSize = min(width,height)/8;
+
+  defSize = windowHeight;
+
+  div.position(0,0);
+  div.html('<img src="drawing.svg" alt="svg did an F">');
+  div.attribute('style','-moz-user-select: none; -webkit-user-select: none; -ms-user-select:none; user-select:none;-o-user-select:none;');
+  div.attribute('unselectable', 'on');
+  div.attribute('onselectstart','return false;');
+  div.attribute('onmousedown','return false;');
+  div.child()[0].width = defSize;
+  div.child()[0].height = defSize;
 }
 
-let circleSize;
-let posX, posY;
-let speedX = -2, speedY = -3;
+let posX = 0, posY = 0, d = 100;
 
 function draw() {
-  background(0);
-  circle(posX,posY,circleSize);
-  posX += speedX;
-  posY += speedY;
-  if (abs(posX - width/2) > width/2 - circleSize/2) {
-    posX = width/2 + sign(posX - width/2) * (width/2 - circleSize/2);
-    speedX = -speedX;
-  }
-  if (abs(posY - height/2) > height/2 - circleSize/2) {
-    posY = height/2 + sign(posY - height/2) * (height/2 - circleSize/2);
-    speedY = -speedY;
-  }
+  clear();
+  div.position(posX,posY);
+  circle(posX+140*scale, posY+120*scale, 10 * scale+30);
 }
 
-function sign(val) {
-  if (val === 0) return 0;
-  return val > 0 ? 1 : -1;
+function mousePressed() {
+  cursor('GRABBING');
+}
+
+let pscale = 1;
+
+function mouseDragged() {
+  posX += mouseX - pmouseX;
+  posY += mouseY - pmouseY;
+}
+
+function mouseReleased() {
+  cursor('GRAB');
+}
+
+function mouseWheel(event) {
+  pscale = scale;
+  scale *= pow(0.85, event.deltaY/100);
+  scale = constrain(scale, minScale, maxScale);
+  posX = (posX - mouseX) * scale / pscale + mouseX;
+  posY = (posY - mouseY) * scale / pscale + mouseY;
+  div.child()[0].width = defSize * scale;
+  div.child()[0].height = defSize * scale;
+  return false;
 }
