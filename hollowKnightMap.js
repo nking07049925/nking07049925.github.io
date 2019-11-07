@@ -7,7 +7,8 @@ function setup() {
   div = createDiv();
   let body = div.parent();
   body.style.overflow = 'hidden';
-  body.style.background = 'rgb(30, 30, 50)';
+  body.style.background = 'rgb(30, 30, 40)';
+  body.style.position = 'relative';
   
   let canvas = createCanvas(windowWidth, windowHeight);
   canvas.position(0,0);
